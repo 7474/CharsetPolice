@@ -1,0 +1,14 @@
+﻿@page
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+
+<div>
+    <form asp-controller="Investigation" asp-action="Form" method="post">
+        <input type="text" name="Uri" placeholder="https://" />
+        <input type="submit" value="Search" />
+    </form>
+</div>

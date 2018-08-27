@@ -47,13 +47,65 @@ namespace CharsetPolice.Police
             }
             return -1;
         }
+
+        public IEnumerable<CharsetSearchResultPerDomain> BuildRanking(IEnumerable<CharsetSearchResult> results)
+        {
+            return results.GroupBy(x => x.Uri.Host).Select(x =>
+            {
+                return new CharsetSearchResultPerDomain()
+                {
+                    Domain = x.Key,
+                    Uri = x.First().Uri,
+                    Timestamp = DateTimeOffset.UtcNow,
+                    IsExist = x.Any(y => y.IsExist),
+                    //Position = x.Where(y => y.IsExist).Max(y => y.Position)
+                    Position = x.Max(y => y.Position)
+                };
+            }).OrderByDescending(x => x.Position);
+        }
     }
 
     public class CharsetSearchResult
     {
+        private const int CHARSET_POSITION_THREASHOLD = 1024;
+
         public Uri Uri { get; set; }
         public DateTimeOffset Timestamp { get; set; }
         public bool IsExist { get; set; }
         public int Position { get; set; }
+
+        public CharsetSearchResultStatus Status
+        {
+            get
+            {
+                if (IsExist)
+                {
+                    if (Position <= CHARSET_POSITION_THREASHOLD)
+                    {
+                        return CharsetSearchResultStatus.Ok;
+                    }
+                    else
+                    {
+                        return CharsetSearchResultStatus.Error;
+                    }
+                }
+                else
+                {
+                    return CharsetSearchResultStatus.Critical;
+                }
+            }
+        }
+        public enum CharsetSearchResultStatus
+        {
+            Ok,
+            Error,
+            Critical
+        }
+    }
+
+    public class CharsetSearchResultPerDomain : CharsetSearchResult
+    {
+        public string Domain { get; set; }
+        // とりあえずいっしょ
     }
 }

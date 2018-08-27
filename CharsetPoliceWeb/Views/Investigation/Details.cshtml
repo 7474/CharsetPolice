@@ -1,0 +1,67 @@
+﻿@model CharsetPolice.Police.CharsetSearchResult
+@using CharsetPolice.Police
+
+@{
+    ViewData["Title"] = "捜査結果: " + Model.Uri.ToString();
+}
+
+<h2>捜査結果</h2>
+
+<div>
+    @if (Model.Status == CharsetSearchResult.CharsetSearchResultStatus.Critical)
+    {
+        <div class="alert alert-danger" role="alert">
+            <p>
+                �����R�[�h�̎w�肪������܂���ł����B�u���E�U�ɂǂ�ȕ\�����Ă�m��܂����B
+            </p>
+        </div>
+    }
+    else if (Model.Status == CharsetSearchResult.CharsetSearchResultStatus.Error)
+    {
+        <div class="alert alert-warning" role="alert">
+            <p><strong>「逮捕だーっ！」</strong></p>
+            <p>
+                文字コード指定が <i>@Model.Position</i> Byte目に見つかりました。
+                <a href="https://www.w3.org/International/questions/qa-html-encoding-declarations.ja">文字コードの指定は 1024 Byte以前に行う</a>必要があります。
+            </p>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            <p><strong>「誤報でした！」</strong></p>
+            文字コード指定が <i>@Model.Position</i> Byte目に見つかりました。
+        </div>
+    }
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Uri)
+        </dt>
+        <dd>
+            <a href="@Model.Uri">@Html.DisplayFor(model => model.Uri)</a>
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Timestamp)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Timestamp)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsExist)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsExist)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Position)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Position)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>
