@@ -31,5 +31,51 @@ namespace CharsetPoliceTest
 
             Assert.AreEqual(expected, actual, "CHARSETが含まれているが対象外。");
         }
+        [TestMethod]
+        public void TestSearchLe()
+        {
+            var policeMan = new CharsetPoliceMan();
+            var body = "<html><head><meta charset=\"utf-16\"></head>";
+
+            var expected = 36;
+            var actual = policeMan.SearchCharset(Encoding.Unicode.GetBytes(body));
+
+            Assert.AreEqual(expected, actual, "charsetが含まれている。");
+        }
+        [TestMethod]
+        public void TestSearchBe()
+        {
+            var policeMan = new CharsetPoliceMan();
+            var body = "<html><head><meta charset=\"utf-16\"></head>";
+
+            var expected = 36;
+            var actual = policeMan.SearchCharset(Encoding.BigEndianUnicode.GetBytes(body));
+
+            Assert.AreEqual(expected, actual, "charsetが含まれている。");
+        }
+        [TestMethod]
+        public void TestSearchBomLe()
+        {
+            var policeMan = new CharsetPoliceMan();
+            var body = "<html><head><meta charset=\"utf-16\"></head>";
+
+            var expected = 38;
+            // XXX BOM付与
+            var actual = policeMan.SearchCharset(Encoding.Unicode.GetBytes(body));
+
+            Assert.AreEqual(expected, actual, "charsetが含まれている。");
+        }
+        [TestMethod]
+        public void TestSearchBomBe()
+        {
+            var policeMan = new CharsetPoliceMan();
+            var body = "<html><head><meta charset=\"utf-16\"></head>";
+
+            var expected = 38;
+            // XXX BOM付与
+            var actual = policeMan.SearchCharset(Encoding.BigEndianUnicode.GetBytes(body));
+
+            Assert.AreEqual(expected, actual, "charsetが含まれている。");
+        }
     }
 }
