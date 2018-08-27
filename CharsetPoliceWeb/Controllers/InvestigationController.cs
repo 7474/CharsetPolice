@@ -22,7 +22,9 @@ namespace CharsetPoliceWeb.Controllers
         // GET: Investigation
         public ActionResult Index()
         {
-            return View();
+            // TODO Pagenate.
+            var results = investigationRepository.GetRecents(0, 10);
+            return View(results);
         }
 
         // GET: Investigation/Details/5
