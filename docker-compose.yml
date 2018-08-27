@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  charsetpoliceweb:
+    image: ${DOCKER_REGISTRY}charsetpoliceweb
+    build:
+      context: .
+      dockerfile: CharsetPoliceWeb/Dockerfile
